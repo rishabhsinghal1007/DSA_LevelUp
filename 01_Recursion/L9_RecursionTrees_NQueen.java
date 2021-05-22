@@ -136,6 +136,57 @@ public class L9_RecursionTrees_NQueen {
         return count;
     }
 
+  // Variation-3 ===========================================================
+
+    public static int nQueen_Combination03(int floor, int tnq, int m, String ans){
+        if (tnq == 0) {
+            System.out.println(ans);
+            return 1;
+        }
+
+        int count = 0;
+
+        for (int room = 0; room < m; room++) {
+            int r = floor;
+            int c = room;
+            if (!cols[c] && !diag[r + c] && !adiag[r - c + m - 1]) {
+                rows[r] = cols[c] = diag[r + c] = adiag[r - c + m - 1] = true;
+
+                count += nQueen_Combination03(floor + 1, tnq - 1, m, ans + "(" + r + ", " + c + ") ");
+
+                rows[r] = cols[c] = diag[r + c] = adiag[r - c + m - 1] = false;
+            }
+        }
+        return count;
+    }
+
+    public static int nQueen_Permutation03(int floor, int tnq, int m, String ans){
+        if (tnq == 0 || floor >= m) {
+            if (tnq == 0) {
+                System.out.println(ans);
+                return 1;
+            }
+            return 0;
+        }
+
+        int count = 0;
+        for (int room = 0; room < m; room++) {
+            int r = floor;
+            int c = room;
+            if (!rows[r] && !cols[c] && !diag[r + c] && !adiag[r - c + m - 1]) {
+                rows[r] = cols[c] = diag[r + c] = adiag[r - c + m - 1] = true;
+
+                count += nQueen_Permutation03(0, tnq - 1, m, ans + "(" + r + ", " + c + ") ");
+
+                rows[r] = cols[c] = diag[r + c] = adiag[r - c + m - 1] = false;
+            }
+        }
+        
+        count += nQueen_Permutation03(floor + 1, tnq, m, ans);
+
+        return count;
+    }
+
     public static void NQueen() {
         int n = 4, m = 4, q = 4;
         boolean[][] boxes = new boolean[n][m];
@@ -149,8 +200,11 @@ public class L9_RecursionTrees_NQueen {
         adiag = new boolean[n + m - 1];
 
         // System.out.println(nQueen_Combination02(n, m, q, 0, ""));
-        System.out.println(nQueen_Permutation02(n, m, q, 0, ""));
+        // System.out.println(nQueen_Permutation02(n, m, q, 0, ""));
+        // System.out.println(nQueen_Combination03(0, q, m, "")); // starting se start kr rhe h
+        System.out.println(nQueen_Permutation03(0, q, m, ""));
     }
+
 
     public static void main(String[] args) {
         NQueen();
