@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class unionFind {
+public class kruskalAlgorithm {
+
     public static class Edge {
         int v = 0, w = 0;
 
@@ -29,35 +31,26 @@ public class unionFind {
     static int[] par, size;
 
     public static int findPar(int u) {
-        if (par[u] == u) {
-            return u;
-        }
-        return par[u] = findPar(par[u]); // path compression
-
-        // return par[u] == u ? u : (par[u] = findPar(par[u]));
+        return par[u] == u ? u : (par[u] = findPar(par[u]));
     }
 
     public static void union(int p1, int p2) {
         if (size[p1] < size[p2]) {
-            par[p1] = p2;
-            size[p2] += size[p1];
-        } else {
             par[p2] = p1;
-            size[p1] += size[p2];
+            size[p1] += p2;
+        } else {
+            par[p1] = p2;
+            size[p2] += p1;
         }
-
     }
 
-    public static void unionFindAlgo(int[][] edges) {
-        int N = edges.length;
+    public static void unionFind(ArrayList<Edge>[] graph, int[][] edges, int n) {
+        par = new int[n];
+        size = new int[n];
 
-        ArrayList<Edge>[] graph = new ArrayList[N];
-        for (int i = 0; i < N; i++) {
-            graph[i] = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            par[i] = i;
         }
-
-        par = new int[N];
-        size = new int[N];
 
         for (int[] e : edges) {
             int u = e[0], v = e[1], w = e[2];
@@ -70,6 +63,19 @@ public class unionFind {
                 addEdge(graph, u, v, w);
             }
         }
+    }
+
+    public static void kruskalAlgo(int[][] edges, int N) {
+        Arrays.sort(edges, (a, b) -> {
+            return a[2] - b[2];
+        });
+
+        ArrayList<Edge>[] graph = new ArrayList[N];
+        for (int i = 0; i < N; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        unionFind(graph, edges, N);
     }
 
 }
