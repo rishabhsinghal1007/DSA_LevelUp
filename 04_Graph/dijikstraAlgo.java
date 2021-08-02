@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 
 public class dijikstraAlgo {
@@ -31,10 +32,17 @@ public class dijikstraAlgo {
     public static class pair {
         int vtx, par, w, wsf;
 
+        // for dijikstra1
         pair(int vtx, int par, int w, int wsf) {
             this.vtx = vtx;
             this.par = par;
             this.w = w;
+            this.wsf = wsf;
+        }
+
+        // for dijikstra2
+        pair(int vtx, int wsf) {
+            this.vtx = vtx;
             this.wsf = wsf;
         }
     }
@@ -71,6 +79,35 @@ public class dijikstraAlgo {
             for (Edge e : graph[p.vtx]) {
                 if (!vis[e.v])
                     pq.add(new pair(e.v, p.vtx, e.w, p.wsf + e.w));
+            }
+        }
+    }
+
+    public static void dijikstra_02(ArrayList<Edge>[] graph, int src) {
+        int N = graph.length;
+        PriorityQueue<pair> pq = new PriorityQueue<>((a, b) -> {
+            return a.wsf - b.wsf;
+        });
+
+        int[] dis = new int[N];
+        int[] par = new int[N];
+        Arrays.fill(dis, (int) 1e9);
+        Arrays.fill(par, -1);
+
+        pq.add(new pair(src, 0));
+        dis[src] = 0;
+        while (pq.size() != 0) {
+            pair p = pq.remove();
+
+            if (p.wsf > dis[p.vtx])
+                continue;
+
+            for (Edge e : graph[p.vtx]) {
+                if (p.wsf + e.w < dis[e.v]) {
+                    dis[e.v] = p.wsf + e.w;
+                    par[e.v] = p.vtx;
+                    pq.add(new pair(e.v, p.wsf + e.w));
+                }
             }
         }
     }
