@@ -1,5 +1,5 @@
 public class gold_Mine {
-    
+
     public static int goldMine_memo_(int sr, int sc, int[][] mat, int[][] dir, int[][] dp) {
         if (sc == mat[0].length - 1) {
             return dp[sr][sc] = mat[sr][sc];
