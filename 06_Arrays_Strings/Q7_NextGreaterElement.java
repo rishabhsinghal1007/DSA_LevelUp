@@ -2,34 +2,37 @@ import java.util.Scanner;
 
 public class Q7_NextGreaterElement {
 
-    private static int dipIndex(char[] arr) {
-        int indx = -1;
+    public static int dipIndex(char[] arr) {
+        int idx = -1;
         for (int i = arr.length - 1; i > 0; i--) {
             if (arr[i - 1] < arr[i]) {
-                indx = i - 1;
+                idx = i - 1;
                 break;
             }
         }
-        return indx;
+
+        return idx;
     }
 
-    private static int ceilIndex(char[] arr, int indx) {
-        // indx -> dip indx
-        int dipVal = arr[indx];
-        int i = arr.length - 1;
-        while (dipVal >= arr[i]) {
-            i--;
+    public static int ceilIndex(char[] arr, int dipIdx) {
+        int idx = dipIdx;
+        for (int i = arr.length - 1; i > dipIdx; i--) {
+            if (arr[dipIdx] < arr[i]) {
+                idx = i;
+                break;
+            }
         }
-        return i;
+
+        return idx;
     }
 
-    private static void swap(char[] arr, int i, int j) {
+    public static void swap(char[] arr, int i, int j) {
         char temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
     }
 
-    private static void reverse(char[] arr, int left, int right) {
+    public static void reverse(char[] arr, int left, int right) {
         while (left < right) {
             swap(arr, left, right);
             left++;
@@ -39,13 +42,14 @@ public class Q7_NextGreaterElement {
 
     public static String nextGreaterElement(String str) {
         char[] arr = str.toCharArray();
-        int dipIndx = dipIndex(arr);
-        if (dipIndx == -1) {
+        int dipIdx = dipIndex(arr);
+        if (dipIdx == -1) {
             return "-1";
         }
-        int ceilIndx = ceilIndex(arr, dipIndx);
-        swap(arr, dipIndx, ceilIndx);
-        reverse(arr, dipIndx + 1, arr.length - 1);
+
+        int ceilIndx = ceilIndex(arr, dipIdx);
+        swap(arr, dipIdx, ceilIndx);
+        reverse(arr, dipIdx + 1, arr.length - 1);
         return String.valueOf(arr);
     }
 
