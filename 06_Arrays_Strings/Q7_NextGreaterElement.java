@@ -22,7 +22,6 @@ public class Q7_NextGreaterElement {
                 break;
             }
         }
-
         return idx;
     }
 
