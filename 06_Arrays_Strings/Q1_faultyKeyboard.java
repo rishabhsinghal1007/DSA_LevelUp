@@ -15,11 +15,10 @@ public class Q1_faultyKeyboard {
             if (name.charAt(i) == typed.charAt(j)) {
                 i++;
                 j++;
-            } else if (i > 0 && name.charAt(i - 1) == typed.charAt(j)) {
+            } else if (i > 0 && name.charAt(i - 1) == typed.charAt(j))
                 j++;
-            } else {
+            else
                 return false;
-            }
         }
 
         while (j < typed.length()) {
